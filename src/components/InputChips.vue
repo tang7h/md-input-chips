@@ -12,7 +12,7 @@
       </div>
 
       <div class="form-item-input">
-        <input class="form-input" type="text" v-model="keyword">
+        <input class="form-input" type="text" v-model="keyword" @keydown.delete="handleKeyboardDelete">
 
         <div class="suggestion">
           <div class="list-item" v-for="i in suggestions" @click="pick(i)">
@@ -29,9 +29,9 @@
 
 <script>
 import _ from 'lodash'
-import chip from '@/components/chip'
+import Chip from '@/components/Chip'
 export default {
-  components: {chip},
+  components: {Chip},
   props: ['options', 'value'],
   data() {
     return {
@@ -65,6 +65,11 @@ export default {
     },
     clear(e) {
       this.selections = _.reject(this.selections, ['label', e])
+    },
+    handleKeyboardDelete() {
+      if (!this.keyword && this.selections.length) {
+        this.selections.pop()
+      }
     }
   }
 }
